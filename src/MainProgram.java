@@ -44,6 +44,7 @@ public class MainProgram {
                     break;
 
             }
+
             if (Option == 0) break;
         }
 
@@ -69,14 +70,15 @@ public class MainProgram {
         while (true) {
 
             while (true) {
-                System.out.print("Enter the Row: ");
-                RowLetter = input2.nextLine().charAt(0);
+                System.out.print("Enter the Row (A/B/C/D): ");
+                RowLetter = input2.nextLine().toUpperCase().charAt(0);
 
                 if (RowLetter == 'A' || RowLetter == 'B' || RowLetter == 'C' || RowLetter == 'D') {
                     System.out.println("The Row You Entered is Correct.");
                     break;
-                } else {
-                    System.out.println("The Row Letter You Entered is Incorrect. Enter Again.");
+                } 
+                else {
+                    System.out.println("The Row You Entered is Incorrect. Enter Again.");
                 }
             }
 
@@ -86,58 +88,48 @@ public class MainProgram {
                     SeatNum = input2.nextInt();
 
                     if (SeatNum > 0 && SeatNum <= 14) {
-                        System.out.println("The Seat Number You Entered is Correct.");
                         Row = RowLetter - 'A';
-                        SeatingPlan[Row][SeatNum - 1] = 1;
 
-                        /*
-                        System.out.println("Updated Seating Plan:");
-                        System.out.println();
-
-                        for (int r = 0; r < SeatingPlan.length; r++) {
-                            for (int c = 0; c < SeatingPlan[r].length; c++) {
-                                System.out.print(SeatingPlan[r][c] + " ");
-                            }
-                            System.out.println();
+                        if(SeatingPlan[Row][SeatNum - 1] == 0){
+                            System.out.println("Seat is Available. Seat "+RowLetter+SeatNum+" has been sold.");
+                            SeatingPlan[Row][SeatNum - 1] = 1;
+                            break;
                         }
-                        */
-                        break;
-                    } else {
+                        else{
+                            System.out.println("This Seat is already sold. Enter Again");
+                        } 
+                    } 
+                    else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
-            } else {
+            } 
+            else {
                 while (true) {
                     System.out.print("Enter the Seat Number: ");
                     SeatNum = input2.nextInt();
 
-
                     if (SeatNum > 0 && SeatNum <= 12) {
-                        System.out.println("The Seat Number You Entered is Correct.");
                         Row = RowLetter - 'A';
-                        SeatingPlan[Row][SeatNum - 1] = 1;
 
-                        /*
-                        System.out.println("Updated Seating Plan:");
-                        System.out.println();
-
-                        for (int r = 0; r < SeatingPlan.length; r++) {
-                            for (int c = 0; c < SeatingPlan[r].length; c++) {
-                                System.out.print(SeatingPlan[r][c] + " ");
-                            }
-                            System.out.println();
+                        if(SeatingPlan[Row][SeatNum - 1] == 0){
+                            System.out.println("Seat is Available. Seat "+RowLetter+SeatNum+" has been sold.");;
+                            SeatingPlan[Row][SeatNum - 1] = 1;
+                            break;
                         }
-                        */
-                        break;
-                    } else {
+                        else{
+                            System.out.println("This Seat is already sold. Enter Again");
+                        }
+                    } 
+                    else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
             }
 
-            // Ask the user to buy another seat
+            // Ask the user to buy another seat or not
             input2.nextLine();
-            System.out.println("Do you want to buy an another seat (Enter 'q' for Quit):  ");
+            System.out.print("Do you want to buy an another seat (Enter 'q' for Quit):  ");
             String Answer = input2.nextLine();
 
             if (Answer.equals("q")) break;
@@ -163,7 +155,7 @@ public class MainProgram {
         while (true) {
 
             while (true) {
-                System.out.print("Enter the Row: ");
+                System.out.print("Enter the Row (A/B/C/D): ");
                 RowLetter = input3.nextLine().charAt(0);
 
                 if (RowLetter == 'A' || RowLetter == 'B' || RowLetter == 'C' || RowLetter == 'D') {
@@ -180,50 +172,40 @@ public class MainProgram {
                     SeatNum = input3.nextInt();
 
                     if (SeatNum > 0 && SeatNum <= 14) {
-                        System.out.println("The Seat Number You Entered is Correct.");
                         Row = RowLetter - 'A';
-                        SeatingPlan[Row][SeatNum - 1] = 0;
 
-                        /*
-                        System.out.println("Updated Seating Plan:");
-                        System.out.println();
-
-                        for (int r = 0; r < SeatingPlan.length; r++) {
-                            for (int c = 0; c < SeatingPlan[r].length; c++) {
-                                System.out.print(SeatingPlan[r][c] + " ");
-                            }
-                            System.out.println();
+                        if(SeatingPlan[Row][SeatNum - 1] == 1){
+                            System.out.println("Seat is now Available.");
+                            SeatingPlan[Row][SeatNum - 1] = 0;
+                            break;
                         }
-                        */
-                        break;
-                    } else {
+                        else{
+                            System.out.println("Seat is already available. Enter again.");
+                        } 
+                    } 
+                    else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
-            } else {
+            } 
+            else {
                 while (true) {
                     System.out.print("Enter the Seat Number: ");
                     SeatNum = input3.nextInt();
 
-
-                    if (SeatNum > 0 && SeatNum <= 12) {
-                        System.out.println("The Seat Number You Entered is Correct.");
+                    if (SeatNum > 0 && SeatNum <= 14) {
                         Row = RowLetter - 'A';
-                        SeatingPlan[Row][SeatNum - 1] = 0;
 
-                        /*
-                        System.out.println("Updated Seating Plan:");
-                        System.out.println();
-
-                        for (int r = 0; r < SeatingPlan.length; r++) {
-                            for (int c = 0; c < SeatingPlan[r].length; c++) {
-                                System.out.print(SeatingPlan[r][c] + " ");
-                            }
-                            System.out.println();
+                        if(SeatingPlan[Row][SeatNum - 1] == 1){
+                            System.out.println("Seat is now Available.");
+                            SeatingPlan[Row][SeatNum - 1] = 0;
+                            break;
                         }
-                        */
-                        break;
-                    } else {
+                        else{
+                            System.out.println("Seat is already available. Enter again.");
+                        } 
+                    } 
+                    else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
@@ -268,6 +250,9 @@ public class MainProgram {
      */
     static void show_seating_plan() {
 
+        System.out.println("Updated Seating Plan: ");
+        System.out.println();
+
         for (int r = 0; r < SeatingPlan.length; r++) {
             for (int c = 0; c < SeatingPlan[r].length; c++) {
                 if (SeatingPlan[r][c] == 0) {
@@ -278,8 +263,6 @@ public class MainProgram {
             }
             System.out.println();
         }
-
-
     }
 
 
