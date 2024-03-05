@@ -52,8 +52,8 @@ public class MainProgram {
     }
 
     /*
-    This "getRow" method is used for, after entering the Row letter, figure out with row in the array, this letter
-    assigned to.
+    After entering the RowLetter, 
+    the "getRow" method is used to determine which row in the array this letter is assigned to.
      */
     private static int getRow(String RowLetter, int RowNumber) {
         switch(RowLetter){
@@ -241,13 +241,23 @@ public class MainProgram {
 
     static void find_first_available() {
 
-        char RowLetter;
+        String RowLetter = "";
         boolean found = false;
 
         for (int r = 0; r < SeatingPlan.length; r++) {
             for (int c = 0; c < SeatingPlan[r].length; c++) {
+
+                if (r == 0) {
+                    RowLetter = "A";
+                } else if (r == 1) {
+                    RowLetter = "B";
+                } else if (r == 2) {
+                    RowLetter = "C";
+                } else if (r == 3) {
+                    RowLetter = "D";
+                }
+
                 if (SeatingPlan[r][c] == 0) {
-                    RowLetter = (char) (r + 'A');
                     System.out.println("The first available seat is: " + RowLetter + (c + 1));
                     found = true;
                     break;
