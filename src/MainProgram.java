@@ -3,17 +3,17 @@ import java.util.Scanner;
 public class MainProgram {
 
     static int[][] SeatingPlan = {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
 
-        //Print the menu
+        // Print the menu
         while (true) {
             System.out.println("***********************************************");
             System.out.println("*                 MENU OPTIONS                *");
@@ -45,83 +45,101 @@ public class MainProgram {
 
             }
 
-            if (Option == 0) break;
+            if (Option == 0)
+                break;
         }
-
 
     }
 
     /*
+    This "getRow" method is used for, after entering the Row letter, figure out with row in the array, this letter
+    assigned to.
+     */
+    private static int getRow(String RowLetter, int RowNumber) {
+        switch(RowLetter){
+            case "A":
+                RowNumber = 0;
+                break;
+            case "B":
+                RowNumber = 1;
+                break;
+            case "C":
+                RowNumber = 2;
+                break;
+            case "D":
+                RowNumber = 3;
+                break;
+        }
+        return RowNumber;
+    }
+
+    /*
      * This "buy_seat" method will,
-          1) First Draw the seating plan.
-          2) Then let you buy one or many seats as you want.
-          3) And then record it and draw the updated seating plan.
+     * 1) First Draw the seating plan.
+     * 2) Then let you buy one or many seats as you want.
+     * 3) And then record it and draw the updated seating plan.
      */
     static void buy_seat() {
 
         Scanner input2 = new Scanner(System.in);
 
         // Buy one or many seats and update the seating plan.
-        char RowLetter;
+        String RowLetter;
         int SeatNum;
 
-        int Row;
+        int Row = 0;
 
         while (true) {
 
             while (true) {
                 System.out.print("Enter the Row (A/B/C/D): ");
-                RowLetter = input2.nextLine().toUpperCase().charAt(0);
+                RowLetter = input2.nextLine().toUpperCase();
 
-                if (RowLetter == 'A' || RowLetter == 'B' || RowLetter == 'C' || RowLetter == 'D') {
+                if (RowLetter.equals("A") || RowLetter.equals("B") || RowLetter.equals("C") || RowLetter.equals("D")) {
                     System.out.println("The Row You Entered is Correct.");
                     break;
-                } 
-                else {
+                } else {
                     System.out.println("The Row You Entered is Incorrect. Enter Again.");
                 }
             }
 
-            if (RowLetter == 'A' || RowLetter == 'D') {
+            Row = getRow(RowLetter, Row);
+
+            if (RowLetter.equals("A")|| RowLetter.equals("D")) {
                 while (true) {
                     System.out.print("Enter the Seat Number: ");
                     SeatNum = input2.nextInt();
 
                     if (SeatNum > 0 && SeatNum <= 14) {
-                        Row = RowLetter - 'A';
 
-                        if(SeatingPlan[Row][SeatNum - 1] == 0){
-                            System.out.println("Seat is Available. Seat "+RowLetter+SeatNum+" has been sold.");
+                        if (SeatingPlan[Row][SeatNum - 1] == 0) {
+                            System.out.println("Seat is Available. Seat " + RowLetter + SeatNum + " has been sold.");
                             SeatingPlan[Row][SeatNum - 1] = 1;
                             break;
-                        }
-                        else{
-                            System.out.println("This Seat is already sold. Enter Again");
                         } 
+                        else {
+                            System.out.println("This Seat is already sold. Enter Again");
+                        }
                     } 
+                    
                     else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
-            } 
-            else {
+            } else {
                 while (true) {
                     System.out.print("Enter the Seat Number: ");
                     SeatNum = input2.nextInt();
 
                     if (SeatNum > 0 && SeatNum <= 12) {
-                        Row = RowLetter - 'A';
-
-                        if(SeatingPlan[Row][SeatNum - 1] == 0){
-                            System.out.println("Seat is Available. Seat "+RowLetter+SeatNum+" has been sold.");;
+                        if (SeatingPlan[Row][SeatNum - 1] == 0) {
+                            System.out.println("Seat is Available. Seat " + RowLetter + SeatNum + " has been sold.");
                             SeatingPlan[Row][SeatNum - 1] = 1;
                             break;
-                        }
-                        else{
+                        } else {
                             System.out.println("This Seat is already sold. Enter Again");
                         }
-                    } 
-                    else {
+                    } else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
@@ -132,33 +150,34 @@ public class MainProgram {
             System.out.print("Do you want to buy an another seat (Enter 'q' for Quit):  ");
             String Answer = input2.nextLine();
 
-            if (Answer.equals("q")) break;
+            if (Answer.equals("q"))
+                break;
         }
     }
 
     /*
-     This "cancel_seat()" method will,
-          1) Cancel the seat you previously bought
-          3) Validate the user input.
-          2) Update the Map.
+     * This "cancel_seat()" method will,
+     * 1) Cancel the seat you previously bought
+     * 3) Validate the user input.
+     * 2) Update the Map.
      */
     static void cancel_seat() {
 
         Scanner input3 = new Scanner(System.in);
 
         // Buy one or many seats and update the seating plan.
-        char RowLetter;
+        String RowLetter;
         int SeatNum;
 
-        int Row;
+        int Row = 0;
 
         while (true) {
 
             while (true) {
                 System.out.print("Enter the Row (A/B/C/D): ");
-                RowLetter = input3.nextLine().charAt(0);
+                RowLetter = input3.nextLine().toUpperCase();
 
-                if (RowLetter == 'A' || RowLetter == 'B' || RowLetter == 'C' || RowLetter == 'D') {
+                if (RowLetter.equals("A") || RowLetter.equals("B") || RowLetter.equals("C") || RowLetter.equals("D")) {
                     System.out.println("The Row You Entered is Correct.");
                     break;
                 } else {
@@ -166,46 +185,40 @@ public class MainProgram {
                 }
             }
 
-            if (RowLetter == 'A' || RowLetter == 'D') {
+            Row = getRow(RowLetter, Row);
+
+            if (RowLetter.equals("A")|| RowLetter.equals("D")) {
                 while (true) {
                     System.out.print("Enter the Seat Number: ");
                     SeatNum = input3.nextInt();
 
                     if (SeatNum > 0 && SeatNum <= 14) {
-                        Row = RowLetter - 'A';
 
-                        if(SeatingPlan[Row][SeatNum - 1] == 1){
+                        if (SeatingPlan[Row][SeatNum - 1] == 1) {
                             System.out.println("Seat is now Available.");
                             SeatingPlan[Row][SeatNum - 1] = 0;
                             break;
-                        }
-                        else{
+                        } else {
                             System.out.println("Seat is already available. Enter again.");
-                        } 
-                    } 
-                    else {
+                        }
+                    } else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
-            } 
-            else {
+            } else {
                 while (true) {
                     System.out.print("Enter the Seat Number: ");
                     SeatNum = input3.nextInt();
 
                     if (SeatNum > 0 && SeatNum <= 14) {
-                        Row = RowLetter - 'A';
-
-                        if(SeatingPlan[Row][SeatNum - 1] == 1){
+                        if (SeatingPlan[Row][SeatNum - 1] == 1) {
                             System.out.println("Seat is now Available.");
                             SeatingPlan[Row][SeatNum - 1] = 0;
                             break;
-                        }
-                        else{
+                        } else {
                             System.out.println("Seat is already available. Enter again.");
-                        } 
-                    } 
-                    else {
+                        }
+                    } else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
@@ -216,14 +229,14 @@ public class MainProgram {
             System.out.println("Do you want to cancel an another seat (Enter 'q' for Quit):  ");
             String Answer = input3.nextLine();
 
-            if (Answer.equals("q")) break;
+            if (Answer.equals("q"))
+                break;
         }
     }
 
-
     /*
-     This "find_first_available" method will
-        1) Help the user to find the first available seat in the airplane.
+     * This "find_first_available" method will
+     * 1) Help the user to find the first available seat in the airplane.
      */
 
     static void find_first_available() {
@@ -240,13 +253,14 @@ public class MainProgram {
                     break;
                 }
             }
-            if (found) break;
+            if (found)
+                break;
         }
     }
 
     /*
-     This "show_seating_plan" method will,
-        1)Help the user to identify the seating plan.
+     * This "show_seating_plan" method will,
+     * 1)Help the user to identify the seating plan.
      */
     static void show_seating_plan() {
 
@@ -264,6 +278,5 @@ public class MainProgram {
             System.out.println();
         }
     }
-
 
 }
