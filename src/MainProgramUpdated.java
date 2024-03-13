@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class MainProgram {
+public class MainProgramUpdated {
 
     static int[][] SeatingPlan = {
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -8,6 +8,9 @@ public class MainProgram {
             {0,0,0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     };
+
+
+    static Ticket[] BoughtTickets = new Ticket[SeatingPlan.length * 14];
 
     public static void main(String[] args) {
 
@@ -42,6 +45,12 @@ public class MainProgram {
                 case 4:
                     show_seating_plan();
                     break;
+                case 5:
+                    print_tickets_info();
+                    break;
+                case 6:
+                    search_ticket();
+                    break;
 
             }
 
@@ -51,11 +60,7 @@ public class MainProgram {
 
     }
 
-    /*
-    After entering the RowLetter, 
-    the "getRow" method is used to determine which row in the array this letter is assigned to.
-     */
-    private static int getRow(String RowLetter, int RowNumber) {
+    public static int getRow(String RowLetter, int RowNumber) {
         switch(RowLetter){
             case "A":
                 RowNumber = 0;
@@ -83,14 +88,38 @@ public class MainProgram {
 
         Scanner input2 = new Scanner(System.in);
 
-        // Buy one or many seats and update the seating plan.
         String RowLetter;
         int SeatNum;
 
         int Row = 0;
-        double Price = 0.0;
+        double Price;
+
+        Person newPassenger;
+        Ticket newTicket;
+
+        String Name;
+        String Surname;
+        String Email;
 
         while (true) {
+            System.out.println("Enter Your Name: ");
+            Name = input2.nextLine();
+
+            System.out.println("Enter your Surname: ");
+            Surname = input2.nextLine();
+
+            while(true){
+                System.out.println("Enter your Email: ");
+                Email = input2.nextLine();
+
+                if(Email.contains("@") && Email.contains(".")){
+                    break;
+                }else{
+                    System.out.println("Enter the Email Again!");
+                }
+            }
+
+            newPassenger = new Person(Name, Surname, Email);
 
             while (true) {
                 System.out.print("Enter the Row (A/B/C/D): ");
@@ -117,17 +146,18 @@ public class MainProgram {
                             System.out.println("Seat is Available. Seat " + RowLetter + SeatNum + " has been sold.");
                             SeatingPlan[Row][SeatNum - 1] = 1;
                             break;
-                        } 
+                        }
                         else {
                             System.out.println("This Seat is already sold. Enter Again");
                         }
-                    } 
-                    
+                    }
+
                     else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
-            } else {
+            }
+            else {
                 while (true) {
                     System.out.print("Enter the Seat Number: ");
                     SeatNum = input2.nextInt();
@@ -157,7 +187,16 @@ public class MainProgram {
             }
             System.out.println("Price: "+Price);
 
+            newTicket = new Ticket(RowLetter,SeatNum,Price,newPassenger);
 
+            for(int t = 0; t < BoughtTickets.length; t++){
+                if(BoughtTickets[t] == null){
+                    BoughtTickets[t] = newTicket;
+                    break;
+                }
+            }
+
+            newTicket.save();
 
             // Ask the user to buy another seat or not
             input2.nextLine();
@@ -176,10 +215,8 @@ public class MainProgram {
      * 2) Update the Map.
      */
     static void cancel_seat() {
-
         Scanner input3 = new Scanner(System.in);
 
-        // Buy one or many seats and update the seating plan.
         String RowLetter;
         int SeatNum;
 
@@ -228,6 +265,15 @@ public class MainProgram {
                         if (SeatingPlan[Row][SeatNum - 1] == 1) {
                             System.out.println("Seat is now Available.");
                             SeatingPlan[Row][SeatNum - 1] = 0;
+
+                            for (int t = 0; t < BoughtTickets.length; t++) {
+                                Ticket ticket = BoughtTickets[t];
+                                if (ticket != null && ticket.getRow().equals(RowLetter) && ticket.getSeat() == SeatNum) {
+                                    BoughtTickets[t] = null;
+                                    break;
+                                }
+                            }
+
                             break;
                         } else {
                             System.out.println("Seat is already available. Enter again.");
@@ -245,6 +291,14 @@ public class MainProgram {
                         if (SeatingPlan[Row][SeatNum - 1] == 1) {
                             System.out.println("Seat is now Available.");
                             SeatingPlan[Row][SeatNum - 1] = 0;
+
+                            for (int t = 0; t < BoughtTickets.length; t++) {
+                                if (BoughtTickets[t] != null && BoughtTickets[t].getRow().equals(RowLetter) && BoughtTickets[t].getSeat() == SeatNum) {
+                                    BoughtTickets[t] = null; // Mark the slot as null to remove the ticket
+                                    break; // Break out of the loop once the ticket is found and removed
+                                }
+                            }
+
                             break;
                         } else {
                             System.out.println("Seat is already available. Enter again.");
@@ -255,6 +309,8 @@ public class MainProgram {
                 }
             }
 
+
+
             // Ask the user to buy another seat
             input3.nextLine();
             System.out.println("Do you want to cancel an another seat (Enter 'q' for Quit):  ");
@@ -262,8 +318,6 @@ public class MainProgram {
 
             if (Answer.equals("q"))
                 break;
-            
-
 
         }
     }
@@ -321,5 +375,105 @@ public class MainProgram {
             System.out.println();
         }
     }
+
+    static void print_tickets_info(){
+
+        double TotalAmount = 0.00;
+
+        System.out.println("Sold Tickets: ");
+        for(int t = 0; t < BoughtTickets.length; t++){
+            if(BoughtTickets[t] != null){
+                BoughtTickets[t].TicketInfo();
+                TotalAmount += BoughtTickets[t].getPrice();
+            }
+
+        }
+
+        System.out.println("Total Amount: $ "+ TotalAmount);
+    }
+
+    static void search_ticket() {
+        Scanner input4 = new Scanner(System.in);
+
+        String RowLetter;
+        int SeatNum;
+
+        int Row = 0;
+        boolean SeatBooked = false;
+
+        while (true) {
+            while (true) {
+                System.out.print("Enter the Row (A/B/C/D): ");
+                RowLetter = input4.nextLine().toUpperCase();
+
+                if (RowLetter.equals("A") || RowLetter.equals("B") || RowLetter.equals("C") || RowLetter.equals("D")) {
+                    System.out.println("The Row You Entered is Correct.");
+                    break;
+                } else {
+                    System.out.println("The Row Letter You Entered is Incorrect. Enter Again.");
+                }
+            }
+
+            Row = getRow(RowLetter, Row);
+
+            if (RowLetter.equals("A")|| RowLetter.equals("D")) {
+                while (true) {
+                    System.out.print("Enter the Seat Number: ");
+                    SeatNum = input4.nextInt();
+
+                    if (SeatNum > 0 && SeatNum <= 14) {
+
+                        if (SeatingPlan[Row][SeatNum - 1] == 1) {
+                            for (int t = 0; t < BoughtTickets.length; t++) {
+                                if (BoughtTickets[t] != null && BoughtTickets[t].getRow().equals(RowLetter) && BoughtTickets[t].getSeat() == SeatNum){
+                                    BoughtTickets[t].TicketInfo();
+                                    break;
+                                }
+                            }
+                            break;
+                        } else {
+                            System.out.println("Seat is already available.");
+                        }
+                    } else {
+                        System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
+                    }
+                }
+            } else {
+                while (true) {
+                    System.out.print("Enter the Seat Number: ");
+                    SeatNum = input4.nextInt();
+
+                    if (SeatNum > 0 && SeatNum <= 14) {
+
+                        if (SeatingPlan[Row][SeatNum - 1] == 1) {
+                            for (int t = 0; t < BoughtTickets.length; t++) {
+                                if (BoughtTickets[t] != null && BoughtTickets[t].getRow().equals(RowLetter) && BoughtTickets[t].getSeat() == SeatNum){
+                                    BoughtTickets[t].TicketInfo();
+                                    break;
+                                }
+                            }
+                            break;
+                        } else {
+                            System.out.println("Seat is already available. Enter again.");
+                        }
+                    } else {
+                        System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
+                    }
+                }
+            }
+
+
+
+            // Ask the user to buy another seat
+            input4.nextLine();
+            System.out.println("Do you want to check another ticket? (Enter 'q' for Quit):  ");
+            String Answer = input4.nextLine();
+
+            if (Answer.equals("q"))
+                break;
+
+        }
+    }
+
 
 }
