@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MainProgramUpdated {
@@ -33,6 +34,9 @@ public class MainProgramUpdated {
             int Option = input.nextInt();
 
             switch (Option) {
+                case 0:
+                    System.out.println("GoodBye!");
+                    return;
                 case 1:
                     buy_seat();
                     break;
@@ -53,9 +57,6 @@ public class MainProgramUpdated {
                     break;
 
             }
-
-            if (Option == 0)
-                break;
         }
 
     }
@@ -137,8 +138,15 @@ public class MainProgramUpdated {
 
             if (RowLetter.equals("A")|| RowLetter.equals("D")) {
                 while (true) {
-                    System.out.print("Enter the Seat Number: ");
-                    SeatNum = input2.nextInt();
+
+                    try{
+                        System.out.print("Enter the Seat Number: ");
+                        SeatNum = input2.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Enter a valid character!");
+                        input2.nextLine();
+                        continue;
+                    }
 
                     if (SeatNum > 0 && SeatNum <= 14) {
 
@@ -159,8 +167,14 @@ public class MainProgramUpdated {
             }
             else {
                 while (true) {
-                    System.out.print("Enter the Seat Number: ");
-                    SeatNum = input2.nextInt();
+                    try{
+                        System.out.print("Enter the Seat Number: ");
+                        SeatNum = input2.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Enter a valid character!");
+                        input2.nextLine();
+                        continue;
+                    }
 
                     if (SeatNum > 0 && SeatNum <= 12) {
                         if (SeatingPlan[Row][SeatNum - 1] == 0) {
@@ -242,6 +256,14 @@ public class MainProgramUpdated {
             }
 
             while (true) {
+
+                System.out.println("Bought Tickets: \n");
+                for(int t = 0; t < BoughtTickets.length; t++){
+                    if(BoughtTickets[t] != null){
+                        System.out.println("* "+BoughtTickets[t].getRow()+BoughtTickets[t].getSeat());
+                    }
+                }
+
                 System.out.print("Enter the Row (A/B/C/D): ");
                 RowLetter = input3.nextLine().toUpperCase();
 
@@ -417,9 +439,17 @@ public class MainProgramUpdated {
             Row = getRow(RowLetter, Row);
 
             if (RowLetter.equals("A")|| RowLetter.equals("D")) {
+
                 while (true) {
-                    System.out.print("Enter the Seat Number: ");
-                    SeatNum = input4.nextInt();
+
+                    try{
+                        System.out.print("Enter the Seat Number: ");
+                        SeatNum = input4.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Enter a valid integer.");
+                        input4.nextLine();
+                        continue;
+                    }
 
                     if (SeatNum > 0 && SeatNum <= 14) {
 
@@ -432,7 +462,8 @@ public class MainProgramUpdated {
                             }
                             break;
                         } else {
-                            System.out.println("Seat is already available.");
+                            System.out.println("Seat is available.");
+                            break;
                         }
                     } else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
@@ -440,8 +471,14 @@ public class MainProgramUpdated {
                 }
             } else {
                 while (true) {
-                    System.out.print("Enter the Seat Number: ");
-                    SeatNum = input4.nextInt();
+                    try{
+                        System.out.print("Enter the Seat Number: ");
+                        SeatNum = input4.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Enter a valid integer.");
+                        input4.nextLine();
+                        continue;
+                    }
 
                     if (SeatNum > 0 && SeatNum <= 14) {
 
@@ -454,16 +491,14 @@ public class MainProgramUpdated {
                             }
                             break;
                         } else {
-                            System.out.println("Seat is already available. Enter again.");
+                            System.out.println("Seat is available.");
+                            break;
                         }
                     } else {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
             }
-
-
-
             // Ask the user to buy another seat
             input4.nextLine();
             System.out.println("Do you want to check another ticket? (Enter 'q' for Quit):  ");
