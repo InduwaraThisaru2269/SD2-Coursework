@@ -68,7 +68,6 @@ public class Ticket {
             newFileWriter.write("Price: "+ price + "\n");
             newFileWriter.write("\n--------Person Information-------- \n");
             newFileWriter.write(newUser.saveToTxtInfo());
-            newFileWriter.write("\n************************************");
             newFileWriter.close();
             System.out.println("Ticket information is saved to a file.");
 

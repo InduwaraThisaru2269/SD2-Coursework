@@ -204,7 +204,8 @@ public class MainProgram {
                 break;
             }
 
-            while (true) {
+
+            /*while (true) {
                 System.out.print("Enter the Row (A/B/C/D): ");
                 RowLetter = input3.nextLine().toUpperCase();
 
@@ -253,7 +254,7 @@ public class MainProgram {
                         System.out.println("The Seat Number You Entered is Incorrect. Enter Again.");
                     }
                 }
-            }
+            }*/
 
             // Ask the user to buy another seat
             input3.nextLine();
